@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pod Entry</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="top">
+  <div class="top-inner">
+    <h1>Franch Express</h1>
+    
+  </div>
+</header>
+
+<main class="page">
+
+  <!-- STEP 1: setup -->
+  <section class="card" id="setup">
+    <h2>Start a batch</h2>
+
+    <div class="row-2">
+      <div class="field">
+        <label for="topDate">Date</label>
+        <input type="date" id="topDate" onclick="try{this.showPicker()}catch(e){}">
+      </div>
+      <div class="field">
+        <label for="topCustomer">Customer name</label>
+        <input type="text" id="topCustomer" autocomplete="off">
+      </div>
+    </div>
+
+    <div class="row-2">
+      <div class="field">
+        <label for="podStart">Starting pod no.</label>
+        <input type="text" id="podStart" inputmode="numeric" placeholder="e.g. 22581684414"
+               oninput="this.value=this.value.replace(/\D/g,'')">
+      </div>
+      <div class="field">
+        <label for="podEnd">Ending pod no.</label>
+        <input type="text" id="podEnd" inputmode="numeric" placeholder="e.g. 22581684591"
+               oninput="this.value=this.value.replace(/\D/g,'')">
+      </div>
+    </div>
+
+    <button type="button" class="primary block" onclick="startEntry()">Start entry</button>
+  </section>
+
+  <!-- STEP 2: one bill at a time -->
+  <form class="card" id="entry" hidden onsubmit="addAndNext(event)">
+    <div class="progress-head">
+      <strong id="progress">Pod 1 of 1</strong>
+      <span id="percent">0%</span>
+    </div>
+    <div class="bar"><div id="barFill"></div></div>
+
+    <div class="pod-display">
+      <span class="tag">Pod number</span>
+      <span class="num" id="podShow">-</span>
+    </div>
+    <input type="hidden" id="rowPod">
+
+    <div class="field">
+      <label for="rowCustomer">Customer name</label>
+      <input type="text" id="rowCustomer" required autocomplete="off">
+    </div>
+
+    <div class="field">
+      <label for="rowDate">Date</label>
+      <input type="date" id="rowDate" required onclick="try{this.showPicker()}catch(e){}">
+    </div>
+
+    <div class="row-2">
+      <div class="field">
+        <label for="rowArea">Area</label>
+        <input type="text" id="rowArea" autocomplete="off">
+      </div>
+      <div class="field">
+        <label for="rowWeight">Weight (g)</label>
+        <input type="number" id="rowWeight" min="1" required inputmode="numeric" oninput="showRate()">
+      </div>
+    </div>
+
+    <div class="rate-box">
+      <span class="lbl">Rate</span>
+      <span class="val" id="rateShow">₹0</span>
+    </div>
+    <input type="hidden" id="rowRate">
+
+    <div class="btn-row">
+      <button type="button" id="backBtn" onclick="goBack()">Back</button>
+      <button type="button" onclick="skipPod()">Skip pod</button>
+      <button type="submit" class="primary" id="nextBtn">Add &amp; next</button>
+    </div>
+
+    <div class="summary">
+      <span>Saved: <b id="sumSaved">0</b> bills</span>
+      <span>Total: <b id="sumTotal">₹0</b></span>
+    </div>
+  </form>
+
+  <!-- STEP 3: finished -->
+  <section class="card" id="done" hidden>
+    <h2>All pods completed</h2>
+    <div class="stats">
+      <div class="stat"><span class="n" id="doneSaved">0</span><span class="t">Saved</span></div>
+      <div class="stat"><span class="n" id="doneSkipped">0</span><span class="t">Skipped</span></div>
+      <div class="stat total"><span class="n" id="doneTotal">₹0</span><span class="t">Total</span></div>
+    </div>
+    <div class="stack">
+      <button type="button" class="primary" onclick="submitAll()">Save bills</button>
+      <button type="button" onclick="reviewLast()">Back to last pod</button>
+      <button type="button" onclick="newBatch()">Start a new batch</button>
+    </div>
+  </section>
+
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>
